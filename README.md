@@ -6,7 +6,8 @@
 ## Introduction to component-oriented programming and robot control.
 Components are the best "marriage" between objects and processes. A brief introduction to component-oriented programming can be found here
 
-The RoboComp robotics framework, mainly written by RoboLab's members,  will be introduced and explained. It is installed in all classroom computers. There are several tutorials that you can follow to learn how to create new components and how to connect them and the the simulated robot in the RCIS simulator and in the real Robex robot. Goals:
+The RoboComp robotics framework, mainly written by RoboLab's members,  will be introduced and explained. It is installed in all classroom computers. There are several tutorials that you can follow to learn how to create new components and how to connect them and the the simulated robot in the RCIS simulator and in the real Robex robot. 
+### Goals:
 1. Following the installation guide in RoboComp, start the RCIS simulator with the world file "simpleworld.xml". Check that it works.
 2. Connect the JoyStick and move the robot around. See how on board camera is rendered.
 3. Read tutorials:
@@ -20,7 +21,7 @@ The RoboComp robotics framework, mainly written by RoboLab's members,  will be i
 7. This week's delivery will be ready when the robot can move for more than 10 minutes without getting stuck or hitting the obstacles.
 8. Code simplicity, elegance and the way robot moves will contribute to the final grade
 
-Deliveries:
+### Deliveries:
 1. Create a new folder in your GitHub account for the component named "practica2" and  upload the new component when finished. Remember to upload only the sources.
 2. OPTIONAL: Write a short paper (2 pages in English) using OverLeaf and  the IEEEConference template, on component oriented programming. Analyze the differences between Object Oriented Programming and Component Oriented Programming. When done upload the PDF file to the "campusvirtual".
 3. Upload on due date a short paper describing the improvements done to the initial code. Describe each contribution, the reason why you did it and the expected results on the robot.

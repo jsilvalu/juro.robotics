@@ -1,8 +1,8 @@
-# Proyecto de Robótica
-- Universidad de Extremadura. 
-- Grado en Ingeniería Informática en Ingeniería de Computadores.
-- Grupo: Juan Antonio Silva Luján y Rodrigo Puerto Pedrera.
-- Curso: 2019/2020.
+# Robotics Subject Project
+- University of Extremadura. 
+- Degree in Computer Engineering.
+- Group: Juan Antonio Silva Luján - Rodrigo Puerto Pedrera.
+- Course: 2019/2020.
 ## Introduction to component-oriented programming and robot control.
 Components are the best "marriage" between objects and processes. A brief introduction to component-oriented programming can be found here
 

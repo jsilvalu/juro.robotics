@@ -1,7 +1,7 @@
 # Robotics Subject Project
 - University of Extremadura. 
 - Degree in Computer Engineering.
-- Group: Juan Antonio Silva Luján - Rodrigo Puerto Pedrera.
+- Group: Juan Antonio Silva Luján & Rodrigo Puerto Pedrera.
 - Course: 2019/2020.
 ## Introduction to component-oriented programming and robot control.
 Components are the best "marriage" between objects and processes. A brief introduction to component-oriented programming can be found here

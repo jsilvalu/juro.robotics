@@ -1,0 +1,16 @@
+import "DifferentialRobot.idsl";
+import "Laser.idsl";
+
+Component choca
+{
+    Communications
+    {
+        requires DifferentialRobot, Laser;
+    };
+	language Cpp11;
+	//gui Qt(QWidget//QDialog//QMainWindow);
+	//options agmagent;
+	//options InnerModelViewer;
+	//statemachine "statemachine.smdsl";
+};
+

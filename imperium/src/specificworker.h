@@ -38,13 +38,20 @@ public:
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
 
+	float f1(float d);
+	float f2(float r,float h, float Vx);
+
 	void RCISMousePicker_setPick(Pick myPick);
 
 public slots:
 	void compute();
 	void initialize(int period);
+
+
 private:
 	std::shared_ptr<InnerModel> innerModel;
+
+	enum class State {IDLE,GOTO,OBSTACULO};
 
 };
 

@@ -1,0 +1,14 @@
+import "DifferentialRobot.idsl";
+import "IDSLs/Laser.idsl";
+import "RCISMousePicker.idsl";
+
+Component imperium
+{
+    Communications
+    {
+     requires DifferentialRobot, Laser;
+     subscribesTo RCISMousePicker;
+    };
+    language Cpp11;
+};
+

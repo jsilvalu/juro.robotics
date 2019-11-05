@@ -82,6 +82,16 @@
         "memory_resource": "cpp",
         "set": "cpp",
         "string": "cpp",
-        "qgraphicsscene": "cpp"
+        "qgraphicsscene": "cpp",
+        "graphicscontext": "cpp",
+        "vec2b": "cpp",
+        "vec2d": "cpp",
+        "vec2f": "cpp",
+        "vec2i": "cpp",
+        "vec2s": "cpp",
+        "vec2ub": "cpp",
+        "vec2ui": "cpp",
+        "vec2us": "cpp",
+        "viewport": "cpp"
     }
 }

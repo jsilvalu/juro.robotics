@@ -37,15 +37,40 @@ SpecificWorker::~SpecificWorker()
 
 bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 {
-//       THE FOLLOWING IS JUST AN EXAMPLE
-//	To use innerModelPath parameter you should uncomment specificmonitor.cpp readConfig method content
-	try
-	{
-		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
-		std::string innermodel_path = par.value;
-		innerModel = new InnerModel(innermodel_path);
+	RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
+	innerModel = std::make_shared<InnerModel>(par.value);
+	xmin = std::stoi(params.at("xmin").value);
+	xmax = std::stoi(params.at("xmax").value);
+	ymin = std::stoi(params.at("ymin").value);
+	ymax = std::stoi(params.at("ymax").value);
+	tilesize = std::stoi(params.at("tilesize").value);
+
+	// Scene
+ 	scene.setSceneRect(xmin, ymin, fabs(xmin)+fabs(xmax), fabs(ymin)+fabs(ymax));
+ 	view.setScene(&scene);
+ 	view.scale(1, -1);
+ 	view.setParent(scrollArea);
+ 	view.fitInView(scene.sceneRect(), Qt::KeepAspectRatio );
+
+
+	qDebug() << "Grid initialize adonkias";
+
+	grid.initialize( TDim{ tilesize, xmin, xmax, ymin, ymax}, TCell{true, false, nullptr} );
+
+	qDebug() << "Grid initialize ok";
+
+	for(auto &[key, value] : grid)
+ 	{
+	 	value.rect = scene.addRect(-tilesize/2,-tilesize/2, 100,100, QPen(Qt::NoPen));			
+		value.rect->setPos(key.x,key.z);
 	}
-	catch(std::exception e) { qFatal("Error reading config params"); }
+
+ 	robot = scene.addRect(QRectF(-200, -200, 400, 400), QPen(), QBrush(Qt::blue));
+ 	noserobot = new QGraphicsEllipseItem(-50,100, 100,100, robot);
+ 	noserobot->setBrush(Qt::magenta);
+
+	view.show();
+
 	return true;
 }
 
@@ -59,60 +84,52 @@ void SpecificWorker::initialize(int period)
 
 void SpecificWorker::compute()
 {
-	try{
-
+    
+    /* actualización de info */
 		RoboCompLaser::TLaserData laserData = laser_proxy->getLaserData();
 		RoboCompDifferentialRobot::TBaseState bState;
 		differentialrobot_proxy->getBaseState(bState);
 		innerModel->updateTransformValues ("base",bState.x, 0, bState.z, 0, bState.alpha, 0 ); 
-		//Vector auxiliar 3D para para obtener la posicion del robot y pasarselas a linea junto con el destino
-		QVec auxLinea;
+		QVec vector_linea; /* vector que guardará la linea de alineamiento */
 		
 		
-			switch(state)
-			{
-			
-				case State::IDLE:
-				if (pick.isActive()){
-					auxLinea = QVec::vec3(bState.x, 0, bState.z);
-					linea = QLine2D( auxLinea, pick.getAux() );
-					state = State::GOTO;
-				}
-				break;
+    switch(state)
+    {
+    
+      case State::IDLE:
+        if (pick.isActive())
+        {
+          vector_linea = QVec::vec3(bState.x, 0, bState.z);
+          linea = QLine2D(auxLinea, pick.getAux() );
+          state = State::GOTO;
+        }
+      break;
+
+      case State::GOTO:
+        differentialrobot_proxy->setSpeedBase(0,0);
+      break;
 
 
-				case State::GOTO:
+      case State::OBSTACULO:
 
-				break;
-
-
-				case State::OBSTACULO:
-
-				break;
-				}
+      break;
+    }
 
 
-	catch(const Ice::Exception &e)
-	{
-		std::cout << "Error reading from Camera" << e << std::endl;
-	}
+	return;
 
 }
 
 
 
 void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
+/* guarda en la clase Pick la posición seleccionada por el ratón */
 {
-    qDebug() << "Nuevo objetivo seleccionado: " << myPick.x << myPick.z;
-    pick.copy(myPick.x, myPick.z);
-    pick.setActive(true);
-
+  pick.copy(myPick.x, myPick.z);
+  qDebug() << "Coordenada pinchada: " << myPick.x << myPick.z;
+  pick.setActive(1);
+  return;
 }
-
-
-
-
-
 
 //Devuelve la diferencia entre la distanciaAnterior a la linea y la distanciaActual a la linea
 //si la distanciaAnterior<100 y la diferencia es < 0 estamos cruzando la linea, es decir
@@ -134,43 +151,42 @@ float SpecificWorker::distanceToLine(const TBaseState &bState){
 
 
 
-void SpecificWorker::gotoTarget(const TLaserData &tLaser){
+void SpecificWorker::gotoTarget(const TLaserData &tLaser)
+{
   
-  if( obstacle(tLaser) == true)   // si hay un obstaculo delante va a BUG
-  {
-    qDebug() << "Obstaculo detectado, de GOTO a BUG";
-    state = State::BUG;
-    return;
-  }
+    if(obstacle(tLaser) == true)   // si hay un obstaculo delante va a BUG
+    {
+      qDebug() << "Obstaculo detectado, de GOTO a BUG";
+      state = State::BUG;
+      return;
+    }
   
   
-  QVec tr = innerModel->transform ("base",pick.getAux(),"world" );
-  const float MAXADV = 400;
-  const float MAXROT=0.5;
-  float angulo;
-  float distanciaObjetivo;
-  distanciaObjetivo = tr.norm2();
-  angulo = atan2 ( tr.x(),tr.z());
-  
-  if ( distanciaObjetivo < 50 ){
+    QVec tr = innerModel->transform ("base",pick.getAux(),"world" );
+    const float MAXADV = 400;
+    const float MAXROT=0.5;
+    float angulo;
+    float distanciaObjetivo;
+    distanciaObjetivo = tr.norm2();
+    angulo = atan2 ( tr.x(),tr.z());
     
-    state = State::IDLE;
-    pick.setActive (false);
-    differentialrobot_proxy->setSpeedBase(0,0);
-    qDebug() << "Fin: de GOTO a IDLE";
-    return;
-    
-  }else{
-    
-    float vAdv = distanciaObjetivo;
-    float vrot = angulo;
-    if(vrot > MAXROT)
-      vrot=MAXROT;
-    if(vrot< -MAXROT)
-      vrot=-MAXROT;
-    vAdv = MAXADV*f1(vAdv)*f2(vrot,0.9,0.1);
-    differentialrobot_proxy->setSpeedBase(vAdv,vrot);
-    
+    if ( distanciaObjetivo < 50 ){
+      
+      state = State::IDLE;
+      pick.setActive (false);
+      differentialrobot_proxy->setSpeedBase(0,0);
+      qDebug() << "Fin: de GOTO a IDLE";
+      return;
+      
+    }else{
+      
+        float vAdv = distanciaObjetivo;
+        float vrot = angulo;
+        
+        if(vrot > MAXROT) vrot=MAXROT;
+        if(vrot < -MAXROT) vrot=-MAXROT;
+        vAdv = MAXADV*f1(vAdv)*f2(vrot,0.9,0.1);
+        differentialrobot_proxy->setSpeedBase(vAdv,vrot);        
     }
 }
 

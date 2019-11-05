@@ -1048,6 +1048,7 @@ src/CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.o
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/config.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/genericmonitor.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/genericworker.h
+ /home/salabeta/robocomp/components/juro.robotics/imperium/src/grid.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/imperium_autogen/EWIEGA46WW/moc_genericmonitor.cpp
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/imperium_autogen/EWIEGA46WW/moc_genericworker.cpp
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/imperium_autogen/EWIEGA46WW/moc_specificmonitor.cpp
@@ -1271,6 +1272,48 @@ src/CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.o
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qwaitcondition.h
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qwineventnotifier.h
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qxmlstream.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontinfo.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontmetrics.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpainter.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixelformat.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgb.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgba64.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtextoption.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtgui-config.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtguiglobal.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs_win.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsEllipseItem
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsScene
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsView
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsscene.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsview.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgets-config.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h
@@ -1284,6 +1327,7 @@ src/CMakeFiles/imperium.dir/main.cpp.o
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/config.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/genericmonitor.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/genericworker.h
+ /home/salabeta/robocomp/components/juro.robotics/imperium/src/grid.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/main.cpp
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/specificmonitor.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/specificworker.h
@@ -1629,6 +1673,19 @@ src/CMakeFiles/imperium.dir/main.cpp.o
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindow.h
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h
  /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs_win.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsEllipseItem
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsScene
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsView
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsscene.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsview.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgets-config.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h
@@ -2026,6 +2083,7 @@ src/CMakeFiles/imperium.dir/specificmonitor.cpp.o
  src/RCISMousePicker.h
 src/CMakeFiles/imperium.dir/specificworker.cpp.o
  /home/salabeta/robocomp/classes/qlog/qlog.h
+ /home/salabeta/robocomp/components/juro.robotics/imperium/src/grid.h
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/specificworker.cpp
  /home/salabeta/robocomp/components/juro.robotics/imperium/src/specificworker.h
  /opt/robocomp/include/innermodel/innermodel.h
@@ -2244,6 +2302,48 @@ src/CMakeFiles/imperium.dir/specificworker.cpp.o
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qwaitcondition.h
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qwineventnotifier.h
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qxmlstream.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontinfo.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qfontmetrics.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpainter.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixelformat.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgb.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qrgba64.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtextoption.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtgui-config.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtguiglobal.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtouchdevice.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qvector2d.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h
+ /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs_win.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsEllipseItem
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsScene
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsView
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qabstractscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qframe.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsscene.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsview.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qscrollarea.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgets-config.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
  src/CommonBehavior.h
  src/DifferentialRobot.h
  src/GenericBase.h

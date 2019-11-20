@@ -43,10 +43,15 @@ public:
 public slots:
 	void compute();
 	void initialize(int period);
-	void AlinearRobot();
-	
+
+
 private:
 	std::shared_ptr<InnerModel> innerModel;
+	bool region_objetivo_DIOS(float x, float z;
+	void alinear_robot();
+	void mano_derecha();
+	bool pinline();
+	
 	struct Objetivo /* estructura del punto objetivo */
 	{
 		QVec punto = QVec::zeros(3);
@@ -57,13 +62,23 @@ private:
 			punto.setItem(2,_z);
 			return;
 		}
+
+		QVec getAux(){ return punto;}
 	};
 
+	RoboCompGenericBase::TBaseState bState;
+	RoboCompLaser::TLaserData ldata;
+	RoboCompLaser::TLaserData front;
+
 	Objetivo objetivo;
-	enum class Estados {IDLE, GO, ALINEACION, OBSTACULO};
+	enum class Estados {IDLE, CONDITIONS, GO, ALINEACION, OBSTACULO, GIRO};
 	Estados estado;
-
-
+	float objective_angle;
+	float robot_angle;
+	float distancia;
+	double frente;
+	int flag; /* control de angulo*/
+	QVec pto_inicial;
 	
 
 };

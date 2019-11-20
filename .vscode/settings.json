@@ -92,6 +92,8 @@
         "vec2ub": "cpp",
         "vec2ui": "cpp",
         "vec2us": "cpp",
-        "viewport": "cpp"
+        "viewport": "cpp",
+        "plane": "cpp",
+        "polytope": "cpp"
     }
 }

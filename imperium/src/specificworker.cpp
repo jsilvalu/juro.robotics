@@ -41,6 +41,7 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	try
 	{
 		estado=Estados::IDLE;
+		manoderecha=EstadosMD::INICIAL;
 		distancia=0.0;
 		pto_inicial = QVec::zeros(3);
 		pto_normalX = QVec::zeros(3);
@@ -97,10 +98,11 @@ void SpecificWorker::compute()
 		}else if(frente <= 300)
 		{
 			differentialrobot_proxy->setSpeedBase(0, 0);
+			qDebug() << "[!] Me he parado!";
 			estado = Estados::OBSTACULO;
 			QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 			dist_eu = tr.norm2();
-			
+			qDebug() << "[!] Distancia con el objetivo: " << dist_eu;
 		} 
 		break;
 	
@@ -110,21 +112,28 @@ void SpecificWorker::compute()
 		break;
 	
 	case Estados::ALINEACION:
-		if(flag == 0) if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;	
+		if(flag == 0){if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;} 	
 		else if(flag == 1)
 		{
-			alinear_robot(this->pto_normalX);
-			update_laser();
-			if(frente <= 300) flag = 2;
-			else
+			qDebug() << "punto normal de x: " << pto_normalX[0] << "," <<  pto_normalX[2];
+			qDebug() << "punto normal de y: " << pto_normalY[0] << "," <<  pto_normalY[2];
+			if(alinear_robot(this->pto_normalX))
 			{
-				estado = Estados::OBSTACULO;
-				manoderecha = EstadosMD::IDLE;
-			} 
+				update_laser();
+				if(frente <= 300) flag = 2;
+				else
+				{
+					qDebug() << "[!] No hay obstáculo delante!";
+					estado = Estados::OBSTACULO;
+					manoderecha = EstadosMD::IDLE;
+				} 
+			}
 		}else if(alinear_robot(this->pto_normalY)) 
 		{
+			qDebug() << "[!] Hay obstáculo delante!";
 			estado = Estados::OBSTACULO;
 			manoderecha = EstadosMD::IDLE;
+			flag=1;
 		}
 		
 		break;
@@ -143,8 +152,13 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 {
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 
-	if(pinline() && tr.norm2() < dist_eu) /* punto en linea*/
+	qDebug() << "[!] Distancia actual con el objetivo: " << tr.norm2();
+
+	qDebug() << "[!] Distancia calculada para la comparación: " << dist_eu-100;
+
+	if(pinline() && tr.norm2() < dist_eu-100) /* punto en linea*/
 	{
+		qDebug() << "[!] Punto en linea y distancia euclidea menor!";
 		flag = 0;
 		estado = Estados::ALINEACION;
 		manoderecha = EstadosMD::INICIAL;
@@ -153,11 +167,21 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 	/* CODIGO DE MANO DERECHA */
 	switch (manoderecha)
 	{
-	case EstadosMD::INICIAL:
-
+		case EstadosMD::INICIAL:
+			qDebug() << "[!] MANO DERECHA SUBESTADO INICIAL!";
+			flag = 1;
+			padondegiro();
 		break;
 	
-	default:
+		case EstadosMD::IDLE:
+			differentialrobot_proxy->setSpeedBase(800, 0);
+			update_laser();
+			if(ldata.front() > 500){
+				differentialrobot_proxy->setSpeedBase(0, 0);
+			}
+		break;
+	
+		default:
 		break;
 	}
 	
@@ -168,10 +192,10 @@ bool SpecificWorker::alinear_robot(QVec point)
 	QVec tr = innerModel->transform("base", point, "world");
 	robot_angle = atan2(tr.x(),tr.z());
 
-	if(fabs(robot_angle)<0.05)
+	if(fabs(robot_angle)<0.005)
 	{
 		differentialrobot_proxy->setSpeedBase(0, 0); /* nos hemos alineado*/
-		qDebug() << "[!] alineao";
+		
 		return true;
 	}
 	differentialrobot_proxy->setSpeedBase(0, robot_angle);
@@ -181,46 +205,44 @@ bool SpecificWorker::alinear_robot(QVec point)
 
 void SpecificWorker::padondegiro()
 {
-	flag = false;
-
 	if(bState.x > pto_inicial[0] && bState.z < pto_inicial[2]) /* izq superior: alineamos con +x y -z*/
 	{
-		pto_normalX.setItem(0,bState.x);
+		pto_normalX.setItem(0,1000+bState.x);
 		pto_normalX.setItem(1,0);
-		pto_normalX.setItem(2,0);
-		pto_normalY.setItem(0,0);
+		pto_normalX.setItem(2,bState.z);
+		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,-bState.z);
+		pto_normalY.setItem(2,bState.z-1000);
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x > pto_inicial[0] && bState.z > pto_inicial[2])  /* izq abajo: alineamos con +x y +z */ 
 	{
-		pto_normalX.setItem(0,bState.x);
+		pto_normalX.setItem(0,1000+bState.x);
 		pto_normalX.setItem(1,0);
-		pto_normalX.setItem(2,0);
-		pto_normalY.setItem(0,0);
+		pto_normalX.setItem(2,bState.z);
+		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,bState.z);
+		pto_normalY.setItem(2,1000+bState.z);
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x < pto_inicial[0] && bState.z < pto_inicial[2])  /* der superior: alineamos con -x y -z*/ 
 	{
-		pto_normalX.setItem(0,-bState.x);
+		pto_normalX.setItem(0,bState.x-1000);
 		pto_normalX.setItem(1,0);
-		pto_normalX.setItem(2,0);
-		pto_normalY.setItem(0,0);
+		pto_normalX.setItem(2,bState.z);
+		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,-bState.z);
+		pto_normalY.setItem(2,bState.z-1000);
 		estado = Estados::ALINEACION;	
 	}
 	else if(bState.x < pto_inicial[0] && bState.z > pto_inicial[2])  /* der abajo: alineamos con -x y +z*/ 
 	{
-		pto_normalX.setItem(0,-bState.x);
+		pto_normalX.setItem(0,bState.x-1000);
 		pto_normalX.setItem(1,0);
-		pto_normalX.setItem(2,0);
-		pto_normalY.setItem(0,0);
+		pto_normalX.setItem(2,bState.z);
+		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,bState.z);
+		pto_normalY.setItem(2,1000+bState.z);
 		estado = Estados::ALINEACION;	
 	}
 	return;

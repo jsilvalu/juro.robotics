@@ -47,10 +47,13 @@ public slots:
 
 private:
 	std::shared_ptr<InnerModel> innerModel;
-	bool region_objetivo_DIOS(float x, float z;
-	void alinear_robot();
+	bool region_objetivo_DIOS(float x, float z);
+	bool alinear_robot(QVec point);
 	void mano_derecha();
 	bool pinline();
+	void padondegiro();  
+	void update_laser();
+
 	
 	struct Objetivo /* estructura del punto objetivo */
 	{
@@ -73,13 +76,17 @@ private:
 	Objetivo objetivo;
 	enum class Estados {IDLE, CONDITIONS, GO, ALINEACION, OBSTACULO, GIRO};
 	Estados estado;
+	enum class EstadosMD {IDLE, ALINEACION, GO, INICIAL};
+	EstadosMD manoderecha;
 	float objective_angle;
 	float robot_angle;
 	float distancia;
 	double frente;
 	int flag; /* control de angulo*/
 	QVec pto_inicial;
-	
+	QVec pto_normalX;
+	QVec pto_normalY;
+	float dist_eu;
 
 };
 

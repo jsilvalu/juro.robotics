@@ -42,6 +42,9 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	{
 		estado=Estados::IDLE;
 		distancia=0.0;
+		pto_inicial = QVec::zeros(3);
+		pto_normalX = QVec::zeros(3);
+		pto_normalY = QVec::zeros(3);
 		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
 		std::string innermodel_path = par.value;
 		innerModel = std::make_shared<InnerModel>(innermodel_path);
@@ -60,15 +63,20 @@ void SpecificWorker::initialize(int period)
 
 }
 
-void SpecificWorker::compute()
+void SpecificWorker::update_laser()
 {
-	differentialrobot_proxy->getBaseState(bState);
 	innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
 	ldata = laser_proxy->getLaserData();
 	front.clear();
 	std::copy(ldata.begin()+32, ldata.end()-32, std::back_inserter(front));
 	std::sort(front.begin(), front.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; }) ;
 	frente = this->front.front().dist;
+}
+
+void SpecificWorker::compute()
+{
+	differentialrobot_proxy->getBaseState(bState);
+	update_laser();
 
 	switch (this->estado)
 	{
@@ -90,9 +98,9 @@ void SpecificWorker::compute()
 		{
 			differentialrobot_proxy->setSpeedBase(0, 0);
 			estado = Estados::OBSTACULO;
-			/* si estamos en el antiguo corral y la bandera esta a 1 */
-			if(flag!=0) flag = 2;
-			/* guardamos corral */
+			QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
+			dist_eu = tr.norm2();
+			
 		} 
 		break;
 	
@@ -102,7 +110,23 @@ void SpecificWorker::compute()
 		break;
 	
 	case Estados::ALINEACION:
-		alinear_robot();		
+		if(flag == 0) if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;	
+		else if(flag == 1)
+		{
+			alinear_robot(this->pto_normalX);
+			update_laser();
+			if(frente <= 300) flag = 2;
+			else
+			{
+				estado = Estados::OBSTACULO;
+				manoderecha = EstadosMD::IDLE;
+			} 
+		}else if(alinear_robot(this->pto_normalY)) 
+		{
+			estado = Estados::OBSTACULO;
+			manoderecha = EstadosMD::IDLE;
+		}
+		
 		break;
 	
 	case Estados::OBSTACULO:
@@ -115,50 +139,90 @@ void SpecificWorker::compute()
 	}
 }
 
-void SpecificWorker::mano_derecha()
+void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo = true, mano derecha sin alinear
 {
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
-	distancia = tr.norm2(); /* distancia euclidea */
 
-
-	if(pinline()) /* punto en linea*/
+	if(pinline() && tr.norm2() < dist_eu) /* punto en linea*/
 	{
-		
-		/* alineamos el robot y vemos si la distancia euclidea es menor que la distancia al objetivo*/
-		if(flag == 1) /* alineamos y pasamos a estado GO*/
-		{
-			alinear_robot(); //establecer una bandera al inicio para comprobar si es la primera vez que nos tyopamos con un obstaculo o no.
-			estado=Estados::GO;
-			return;
-		
-		}else if (flag == 2)
-		{
-			/* seguimos haciendo mano derecha */
-			flag = 0
-		}else flag=1;
+		flag = 0;
+		estado = Estados::ALINEACION;
+		manoderecha = EstadosMD::INICIAL;
 	}
 
 	/* CODIGO DE MANO DERECHA */
+	switch (manoderecha)
+	{
+	case EstadosMD::INICIAL:
 
+		break;
+	
+	default:
+		break;
+	}
+	
 }
 
-void SpecificWorker::alinear_robot()
+bool SpecificWorker::alinear_robot(QVec point)
 {
-	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
+	QVec tr = innerModel->transform("base", point, "world");
 	robot_angle = atan2(tr.x(),tr.z());
 
 	if(fabs(robot_angle)<0.05)
 	{
 		differentialrobot_proxy->setSpeedBase(0, 0); /* nos hemos alineado*/
-		estado= Estados::GO;
 		qDebug() << "[!] alineao";
-		return;
+		return true;
 	}
 	differentialrobot_proxy->setSpeedBase(0, robot_angle);
-	qDebug() << "valor del angulo: " << robot_angle;
-	qDebug() << "x: " << this->objetivo.punto[0];
-	qDebug() << "z: " << this->objetivo.punto[2];
 	
+	return false;
+}
+
+void SpecificWorker::padondegiro()
+{
+	flag = false;
+
+	if(bState.x > pto_inicial[0] && bState.z < pto_inicial[2]) /* izq superior: alineamos con +x y -z*/
+	{
+		pto_normalX.setItem(0,bState.x);
+		pto_normalX.setItem(1,0);
+		pto_normalX.setItem(2,0);
+		pto_normalY.setItem(0,0);
+		pto_normalY.setItem(1,0);
+		pto_normalY.setItem(2,-bState.z);
+		estado = Estados::ALINEACION;
+	}
+	else if(bState.x > pto_inicial[0] && bState.z > pto_inicial[2])  /* izq abajo: alineamos con +x y +z */ 
+	{
+		pto_normalX.setItem(0,bState.x);
+		pto_normalX.setItem(1,0);
+		pto_normalX.setItem(2,0);
+		pto_normalY.setItem(0,0);
+		pto_normalY.setItem(1,0);
+		pto_normalY.setItem(2,bState.z);
+		estado = Estados::ALINEACION;
+	}
+	else if(bState.x < pto_inicial[0] && bState.z < pto_inicial[2])  /* der superior: alineamos con -x y -z*/ 
+	{
+		pto_normalX.setItem(0,-bState.x);
+		pto_normalX.setItem(1,0);
+		pto_normalX.setItem(2,0);
+		pto_normalY.setItem(0,0);
+		pto_normalY.setItem(1,0);
+		pto_normalY.setItem(2,-bState.z);
+		estado = Estados::ALINEACION;	
+	}
+	else if(bState.x < pto_inicial[0] && bState.z > pto_inicial[2])  /* der abajo: alineamos con -x y +z*/ 
+	{
+		pto_normalX.setItem(0,-bState.x);
+		pto_normalX.setItem(1,0);
+		pto_normalX.setItem(2,0);
+		pto_normalY.setItem(0,0);
+		pto_normalY.setItem(1,0);
+		pto_normalY.setItem(2,bState.z);
+		estado = Estados::ALINEACION;	
+	}
 	return;
 }
 
@@ -172,11 +236,14 @@ void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 	pto_inicial.setItem(0,bState.x);
 	pto_inicial.setItem(1,0);
 	pto_inicial.setItem(2,bState.z);
+	
+
 
 	/* establecimiento del pto objetivo */
 	this->objetivo.copy(myPick.x, myPick.z);
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 	objective_angle = atan2(tr.x(),tr.z());
+	flag = 0;
 	estado = Estados::ALINEACION;
 			
 
@@ -186,13 +253,14 @@ void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 
 
 bool SpecificWorker::pinline()
+/*
+	Calculo para compobar si un punto pertenece a una recta. Debe cumplirse que el resultado de la operacion:
+	d = (Y2-Y1)*X0 + (X1-X2)*Y0 + (X2*Y1-Y2*X1)  debe retornar 0. En tal caso, el punto pertenece a una recta.
+	P1 (X1,Y1)  -  Punto de origen
+	P2 (X2,Y2)  -  Punto objetivo
+	P0 (X0,Y0)  -  Punto actual 
+*/
 {
-
-	//Calculo para compobar si un punto pertenece a una recta. Debe cumplirse que el resultado de la operacion:
-	//d = (Y2-Y1)*X0 + (X1-X2)*Y0 + (X2*Y1-Y2*X1)  debe retornar 0. En tal caso, el punto pertenece a una recta.
-	//P1 (X1,Y1)  -  Punto de origen
-	//P2 (X2,Y2)  -  Punto objetivo
-	//P0 (X0,Y0)  -  Punto actual
 	auto d = (this->objetivo.punto[2]-pto_inicial[2])*bState.x + (pto_inicial[0]-this->objetivo.punto[0])*bState.z +(objetivo.punto[0]*pto_inicial[2]-this->objetivo.punto[2]*pto_inicial[0]);
 	return (d >= -100 || d <= 100);
 }

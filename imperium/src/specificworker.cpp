@@ -100,6 +100,7 @@ void SpecificWorker::compute()
 			differentialrobot_proxy->setSpeedBase(0, 0);
 			qDebug() << "[!] Me he parado!";
 			estado = Estados::OBSTACULO;
+			manoderecha = EstadosMD::INICIAL;
 			QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 			dist_eu = tr.norm2();
 			qDebug() << "[!] Distancia con el objetivo: " << dist_eu;
@@ -115,25 +116,27 @@ void SpecificWorker::compute()
 		if(flag == 0){if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;} 	
 		else if(flag == 1)
 		{
-			qDebug() << "punto normal de x: " << pto_normalX[0] << "," <<  pto_normalX[2];
-			qDebug() << "punto normal de y: " << pto_normalY[0] << "," <<  pto_normalY[2];
 			if(alinear_robot(this->pto_normalX))
 			{
 				update_laser();
-				if(frente <= 300) flag = 2;
+				if(frente <= 300)
+				{
+					flag = 2;
+					izq = !izq;
+					up=!up;
+				}
 				else
 				{
-					qDebug() << "[!] No hay obstáculo delante!";
 					estado = Estados::OBSTACULO;
 					manoderecha = EstadosMD::IDLE;
+					differentialrobot_proxy->setSpeedBase(400, 0);
 				} 
 			}
 		}else if(alinear_robot(this->pto_normalY)) 
 		{
-			qDebug() << "[!] Hay obstáculo delante!";
 			estado = Estados::OBSTACULO;
 			manoderecha = EstadosMD::IDLE;
-			flag=1;
+			differentialrobot_proxy->setSpeedBase(400, 0);
 		}
 		
 		break;
@@ -161,7 +164,7 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 		qDebug() << "[!] Punto en linea y distancia euclidea menor!";
 		flag = 0;
 		estado = Estados::ALINEACION;
-		manoderecha = EstadosMD::INICIAL;
+		return;
 	}
 
 	/* CODIGO DE MANO DERECHA */
@@ -174,10 +177,49 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 		break;
 	
 		case EstadosMD::IDLE:
-			differentialrobot_proxy->setSpeedBase(800, 0);
 			update_laser();
-			if(ldata.front() > 500){
-				differentialrobot_proxy->setSpeedBase(0, 0);
+			if(ldata.begin() > 500){
+				differentialrobot_proxy->setSpeedBase(0, 0); /* hay que crear las variables booleanas up y izq */
+				if(flag==1)
+				{
+					flag=2;	
+					if(up) /* up = true ya he girado hacia arriba */
+					{
+						pto_normalY.setItem(0,bState.x);
+						pto_normalY.setItem(1,0);
+						pto_normalY.setItem(2,bState.z-1000);
+						estado = Estados::ALINEACION;
+						up=!up;
+					}else
+					{
+						pto_normalY.setItem(0,bState.x);
+						pto_normalY.setItem(1,0);
+						pto_normalY.setItem(2,bState.z+1000);
+						estado = Estados::ALINEACION;
+						up=!up;						
+					}
+					
+				}else if(flag==2) /* alternamos giros */
+				{
+					flag=1; /* me alineo con x*/
+					
+					if(izq) /*contador para saber hacia donde giro: true = he girado ya a la izquierda*/
+					{
+						pto_normalX.setItem(0,1000+bState.x);
+						pto_normalX.setItem(1,0);
+						pto_normalX.setItem(2,bState.z);
+						estado = Estados::ALINEACION;
+						izq=!izq;
+					}else
+					{
+						pto_normalX.setItem(0,bState.x-1000);
+						pto_normalX.setItem(1,0);
+						pto_normalX.setItem(2,bState.z);
+						estado = Estados::ALINEACION;
+						izq=!izq;
+					}	
+					
+				}	
 			}
 		break;
 	
@@ -213,6 +255,8 @@ void SpecificWorker::padondegiro()
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
 		pto_normalY.setItem(2,bState.z-1000);
+		up = true;
+		izq = false;
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x > pto_inicial[0] && bState.z > pto_inicial[2])  /* izq abajo: alineamos con +x y +z */ 
@@ -223,6 +267,8 @@ void SpecificWorker::padondegiro()
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
 		pto_normalY.setItem(2,1000+bState.z);
+		up = false;
+		izq = false;
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x < pto_inicial[0] && bState.z < pto_inicial[2])  /* der superior: alineamos con -x y -z*/ 
@@ -234,6 +280,8 @@ void SpecificWorker::padondegiro()
 		pto_normalY.setItem(1,0);
 		pto_normalY.setItem(2,bState.z-1000);
 		estado = Estados::ALINEACION;	
+		up = true;
+		izq = true;
 	}
 	else if(bState.x < pto_inicial[0] && bState.z > pto_inicial[2])  /* der abajo: alineamos con -x y +z*/ 
 	{
@@ -243,6 +291,8 @@ void SpecificWorker::padondegiro()
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
 		pto_normalY.setItem(2,1000+bState.z);
+		up = false;
+		izq = true;
 		estado = Estados::ALINEACION;	
 	}
 	return;

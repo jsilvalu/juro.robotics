@@ -53,7 +53,7 @@ private:
 	bool pinline();
 	void padondegiro();  
 	void update_laser();
-
+	void rodear_osbtaculo();
 	
 	struct Objetivo /* estructura del punto objetivo */
 	{

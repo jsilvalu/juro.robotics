@@ -56,6 +56,8 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 	return true;
 }
 
+
+
 void SpecificWorker::initialize(int period)
 {
 	std::cout << "Initialize worker" << std::endl;
@@ -63,6 +65,8 @@ void SpecificWorker::initialize(int period)
 	timer.start(Period);
 
 }
+
+
 
 void SpecificWorker::update_laser()
 {
@@ -73,6 +77,8 @@ void SpecificWorker::update_laser()
 	std::sort(front.begin(), front.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; }) ;
 	frente = this->front.front().dist;
 }
+
+
 
 void SpecificWorker::compute()
 {
@@ -115,8 +121,8 @@ void SpecificWorker::compute()
 		if(flag == 0){if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;} 	
 		else if(flag == 1)
 		{
-			qDebug() << "punto normal de x: " << pto_normalX[0] << "," <<  pto_normalX[2];
-			qDebug() << "punto normal de y: " << pto_normalY[0] << "," <<  pto_normalY[2];
+			//qDebug() << "punto normal de x: " << pto_normalX[0] << "," <<  pto_normalX[2];
+			//qDebug() << "punto normal de y: " << pto_normalY[0] << "," <<  pto_normalY[2];
 			if(alinear_robot(this->pto_normalX))
 			{
 				update_laser();
@@ -148,13 +154,14 @@ void SpecificWorker::compute()
 	}
 }
 
+
+
 void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo = true, mano derecha sin alinear
 {
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 
-	qDebug() << "[!] Distancia actual con el objetivo: " << tr.norm2();
-
-	qDebug() << "[!] Distancia calculada para la comparación: " << dist_eu-100;
+	//qDebug() << "[!] Distancia actual con el objetivo: " << tr.norm2();
+	//qDebug() << "[!] Distancia calculada para la comparación: " << dist_eu-100;
 
 	if(pinline() && tr.norm2() < dist_eu-100) /* punto en linea*/
 	{
@@ -176,9 +183,15 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 		case EstadosMD::IDLE:
 			differentialrobot_proxy->setSpeedBase(800, 0);
 			update_laser();
-			if(ldata.front() > 500){
+			if(ldata.front() > 500)
+			{
 				differentialrobot_proxy->setSpeedBase(0, 0);
+				qDebug() << "-----------------------------------------------";
 			}
+		break;
+
+		case GO:
+			rodear_osbtaculo();
 		break;
 	
 		default:
@@ -195,13 +208,26 @@ bool SpecificWorker::alinear_robot(QVec point)
 	if(fabs(robot_angle)<0.005)
 	{
 		differentialrobot_proxy->setSpeedBase(0, 0); /* nos hemos alineado*/
-		
 		return true;
 	}
 	differentialrobot_proxy->setSpeedBase(0, robot_angle);
-	
 	return false;
 }
+
+
+
+void SpecificWorker::rodear_osbtaculo()
+{
+	auto min_derecha = std::min(ldata.begin(), ldata.end()-66, [](auto a, auto b){ return (*a).dist < (*b).dist; });
+	auto min_A = std::min(ldata.begin()+33, ldata.end()-33, [](auto a, auto b){ return (*a).dist < (*b).dist; });
+	auto min_izquierda = std::min(ldata.begin()+66, ldata.end()-1, [](auto a, auto b){ return (*a).dist < (*b).dist; });
+
+
+
+}
+
+
+
 
 void SpecificWorker::padondegiro()
 {
@@ -248,6 +274,8 @@ void SpecificWorker::padondegiro()
 	return;
 }
 
+
+
 void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 {
 	differentialrobot_proxy->setSpeedBase(0, 0);
@@ -259,8 +287,6 @@ void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 	pto_inicial.setItem(1,0);
 	pto_inicial.setItem(2,bState.z);
 	
-
-
 	/* establecimiento del pto objetivo */
 	this->objetivo.copy(myPick.x, myPick.z);
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
@@ -268,10 +294,11 @@ void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 	flag = 0;
 	estado = Estados::ALINEACION;
 			
-
 	qDebug() << "[!] OBJETIVO SELECCIONADO - COORDENADAS {"<< myPick.x << "," << myPick.z << "}";
 	return;
 }
+
+
 
 
 bool SpecificWorker::pinline()
@@ -287,6 +314,8 @@ bool SpecificWorker::pinline()
 	return (d >= -100 || d <= 100);
 }
 	
+
+
 
 bool SpecificWorker::region_objetivo_DIOS(float x, float z){
 

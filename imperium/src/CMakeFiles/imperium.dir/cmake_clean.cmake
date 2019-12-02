@@ -27,8 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/imperium.dir/Laser.cpp.o"
   "CMakeFiles/imperium.dir/RCISMousePicker.cpp.o"
   "CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.o"
-  "/bin/imperium.pdb"
-  "/bin/imperium"
+  "../bin/imperium.pdb"
+  "../bin/imperium"
 )
 
 # Per-language clean rules from dependency scanning.

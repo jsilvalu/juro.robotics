@@ -72,10 +72,24 @@ void SpecificWorker::update_laser()
 {
 	innerModel->updateTransformValues("base", bState.x, 0, bState.z, 0, bState.alpha, 0);
 	ldata = laser_proxy->getLaserData();
+	
 	front.clear();
+	derecho.clear();
+	izquierdo.clear();
+	
 	std::copy(ldata.begin()+32, ldata.end()-32, std::back_inserter(front));
+	std::copy(ldata.begin()+1, ldata.end()-60, std::back_inserter(derecho));
+	std::copy(ldata.begin()+60, ldata.end()-1, std::back_inserter(izquierdo));
+	
 	std::sort(front.begin(), front.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; }) ;
+	std::sort(derecho.begin(), derecho.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; }) ;
+	std::sort(izquierdo.begin(), izquierdo.end(), [](RoboCompLaser::TData a, RoboCompLaser::TData b){ return     a.dist < b.dist; }) ;
+	
 	frente = this->front.front().dist;
+	derecha = this->derecho.front().dist;
+	izquierda = this->izquierdo.front().dist;
+
+	return;
 }
 
 
@@ -86,6 +100,7 @@ void SpecificWorker::compute()
 	update_laser();
 
 	switch (this->estado)
+
 	{
 	
 	case Estados::IDLE:
@@ -96,19 +111,15 @@ void SpecificWorker::compute()
 		if(region_objetivo_DIOS(this->objetivo.punto[0], this->objetivo.punto[2]))
 		{
 			differentialrobot_proxy->setSpeedBase(0, 0);
-			qDebug() << " --------------------";
-			qDebug() << "| OBJETIVO ALCANZADO |";
-			qDebug() << " --------------------";
 			estado = Estados::IDLE;
 
 		}else if(frente <= 300)
 		{
 			differentialrobot_proxy->setSpeedBase(0, 0);
-			qDebug() << "[!] Me he parado!";
 			estado = Estados::OBSTACULO;
+			manoderecha = EstadosMD::INICIAL;
 			QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 			dist_eu = tr.norm2();
-			qDebug() << "[!] Distancia con el objetivo: " << dist_eu;
 		} 
 		break;
 	
@@ -121,25 +132,43 @@ void SpecificWorker::compute()
 		if(flag == 0){if(alinear_robot(this->objetivo.punto)) estado = Estados::GO;} 	
 		else if(flag == 1)
 		{
-			//qDebug() << "punto normal de x: " << pto_normalX[0] << "," <<  pto_normalX[2];
-			//qDebug() << "punto normal de y: " << pto_normalY[0] << "," <<  pto_normalY[2];
 			if(alinear_robot(this->pto_normalX))
 			{
 				update_laser();
-				if(frente <= 300) flag = 2;
+				if(frente <= 300)
+				{
+					flag = 2;
+					dir = !dir;
+				}
 				else
 				{
-					qDebug() << "[!] No hay obstáculo delante!";
 					estado = Estados::OBSTACULO;
 					manoderecha = EstadosMD::IDLE;
+					tanto = (dir) ? derecha : izquierda; 
+					differentialrobot_proxy->setSpeedBase(1000, 0);
 				} 
 			}
 		}else if(alinear_robot(this->pto_normalY)) 
 		{
-			qDebug() << "[!] Hay obstáculo delante!";
 			estado = Estados::OBSTACULO;
 			manoderecha = EstadosMD::IDLE;
-			flag=1;
+			update_laser();
+			tanto = (dir) ? derecha : izquierda; 
+			if(tanto > 600)
+			{
+				differentialrobot_proxy->setSpeedBase(1000, 0); /* hay que crear las variables booleanas up y izq */
+				usleep(350000);
+
+				/* Giro */
+				double giro = pi_medios/2.0;
+				differentialrobot_proxy->setSpeedBase(0, (dir)?giro:-giro); 
+				usleep(2*1000000);
+				differentialrobot_proxy->setSpeedBase(0, 0);
+				tanto = (dir) ? derecha : izquierda; 
+				differentialrobot_proxy->setSpeedBase(1000, 0);
+
+			}else differentialrobot_proxy->setSpeedBase(1000, 0);
+			
 		}
 		
 		break;
@@ -160,42 +189,50 @@ void SpecificWorker::mano_derecha()  //modo = false, mano derecha normal  modo =
 {
 	QVec tr = innerModel->transform("base", this->objetivo.punto, "world");
 
-	//qDebug() << "[!] Distancia actual con el objetivo: " << tr.norm2();
-	//qDebug() << "[!] Distancia calculada para la comparación: " << dist_eu-100;
 
-	if(pinline() && tr.norm2() < dist_eu-100) /* punto en linea*/
+	if(pinline() && tr.norm2() < dist_eu-250) /* punto en linea*/
 	{
-		qDebug() << "[!] Punto en linea y distancia euclidea menor!";
 		flag = 0;
 		estado = Estados::ALINEACION;
-		manoderecha = EstadosMD::INICIAL;
+		QVec aux = QVec::vec3(bState.x, 0, bState.z);
+		recta = QLine2D( aux, objetivo.punto);
+		return;
 	}
+
+	float mano = (dir) ? derecha : izquierda; 
 
 	/* CODIGO DE MANO DERECHA */
 	switch (manoderecha)
 	{
 		case EstadosMD::INICIAL:
-			qDebug() << "[!] MANO DERECHA SUBESTADO INICIAL!";
 			flag = 1;
 			padondegiro();
 		break;
 	
 		case EstadosMD::IDLE:
-			differentialrobot_proxy->setSpeedBase(800, 0);
 			update_laser();
-			if(ldata.front() > 500)
-			{
+			if(std::abs(mano) > 100 + std::abs(tanto)){
+				
+				/* Aceleración*/
+				differentialrobot_proxy->setSpeedBase(1000, 0); /* hay que crear las variables booleanas up y izq */
+				usleep(350000);
+				
+				/* Giro */
+				double giro = pi_medios/2.0;
+				differentialrobot_proxy->setSpeedBase(0, (dir)?giro:-giro); 
+				usleep(2*1000000);
 				differentialrobot_proxy->setSpeedBase(0, 0);
-				qDebug() << "-----------------------------------------------";
+				
+				/* Avance */
+				manoderecha = EstadosMD::GO;
 			}
 		break;
 
-		case GO:
-			rodear_osbtaculo();
+		case EstadosMD::GO:
+			differentialrobot_proxy->setSpeedBase(600, 0); 
+			manoderecha = EstadosMD::IDLE;
 		break;
 	
-		default:
-		break;
 	}
 	
 }
@@ -216,59 +253,51 @@ bool SpecificWorker::alinear_robot(QVec point)
 
 
 
-void SpecificWorker::rodear_osbtaculo()
-{
-	auto min_derecha = std::min(ldata.begin(), ldata.end()-66, [](auto a, auto b){ return (*a).dist < (*b).dist; });
-	auto min_A = std::min(ldata.begin()+33, ldata.end()-33, [](auto a, auto b){ return (*a).dist < (*b).dist; });
-	auto min_izquierda = std::min(ldata.begin()+66, ldata.end()-1, [](auto a, auto b){ return (*a).dist < (*b).dist; });
-
-
-
-}
-
-
-
 
 void SpecificWorker::padondegiro()
 {
 	if(bState.x > pto_inicial[0] && bState.z < pto_inicial[2]) /* izq superior: alineamos con +x y -z*/
 	{
-		pto_normalX.setItem(0,1000+bState.x);
+		pto_normalX.setItem(0,100+bState.x);
 		pto_normalX.setItem(1,0);
 		pto_normalX.setItem(2,bState.z);
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,bState.z-1000);
+		pto_normalY.setItem(2,bState.z-100);
+		dir = true;
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x > pto_inicial[0] && bState.z > pto_inicial[2])  /* izq abajo: alineamos con +x y +z */ 
 	{
-		pto_normalX.setItem(0,1000+bState.x);
+		pto_normalX.setItem(0,100+bState.x);
 		pto_normalX.setItem(1,0);
 		pto_normalX.setItem(2,bState.z);
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,1000+bState.z);
+		pto_normalY.setItem(2,100+bState.z);
+		dir = false;
 		estado = Estados::ALINEACION;
 	}
 	else if(bState.x < pto_inicial[0] && bState.z < pto_inicial[2])  /* der superior: alineamos con -x y -z*/ 
 	{
-		pto_normalX.setItem(0,bState.x-1000);
+		pto_normalX.setItem(0,bState.x-100);
 		pto_normalX.setItem(1,0);
 		pto_normalX.setItem(2,bState.z);
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,bState.z-1000);
+		pto_normalY.setItem(2,bState.z-100);
+		dir = false;
 		estado = Estados::ALINEACION;	
 	}
 	else if(bState.x < pto_inicial[0] && bState.z > pto_inicial[2])  /* der abajo: alineamos con -x y +z*/ 
 	{
-		pto_normalX.setItem(0,bState.x-1000);
+		pto_normalX.setItem(0,bState.x-100);
 		pto_normalX.setItem(1,0);
 		pto_normalX.setItem(2,bState.z);
 		pto_normalY.setItem(0,bState.x);
 		pto_normalY.setItem(1,0);
-		pto_normalY.setItem(2,1000+bState.z);
+		pto_normalY.setItem(2,100+bState.z);
+		dir = true;
 		estado = Estados::ALINEACION;	
 	}
 	return;
@@ -294,7 +323,9 @@ void SpecificWorker::RCISMousePicker_setPick(Pick myPick)
 	flag = 0;
 	estado = Estados::ALINEACION;
 			
-	qDebug() << "[!] OBJETIVO SELECCIONADO - COORDENADAS {"<< myPick.x << "," << myPick.z << "}";
+	/* estblecimiento de la linea */
+	QVec aux = QVec::vec3(bState.x, 0, bState.z);
+	recta = QLine2D( aux, objetivo.punto);
 	return;
 }
 
@@ -310,8 +341,11 @@ bool SpecificWorker::pinline()
 	P0 (X0,Y0)  -  Punto actual 
 */
 {
-	auto d = (this->objetivo.punto[2]-pto_inicial[2])*bState.x + (pto_inicial[0]-this->objetivo.punto[0])*bState.z +(objetivo.punto[0]*pto_inicial[2]-this->objetivo.punto[2]*pto_inicial[0]);
-	return (d >= -100 || d <= 100);
+	QVec posicion = QVec::vec3(bState.x, 0., bState.z);
+	float actual = fabs(recta.perpendicularDistanceToPoint(posicion));
+	float diferencia = actual - anterior;
+	anterior = actual;
+  	return (anterior < 100 && diferencia <= 0);	
 }
 	
 

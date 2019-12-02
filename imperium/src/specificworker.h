@@ -29,6 +29,7 @@
 
 #include <genericworker.h>
 #include <innermodel/innermodel.h>
+#define pi_medios 1.5707963267948965579989817342720925807952880859375
 
 class SpecificWorker : public GenericWorker
 {
@@ -53,7 +54,6 @@ private:
 	bool pinline();
 	void padondegiro();  
 	void update_laser();
-	void rodear_osbtaculo();
 	
 	struct Objetivo /* estructura del punto objetivo */
 	{
@@ -72,22 +72,31 @@ private:
 	RoboCompGenericBase::TBaseState bState;
 	RoboCompLaser::TLaserData ldata;
 	RoboCompLaser::TLaserData front;
+	RoboCompLaser::TLaserData derecho;
+	RoboCompLaser::TLaserData izquierdo;
 
 	Objetivo objetivo;
 	enum class Estados {IDLE, CONDITIONS, GO, ALINEACION, OBSTACULO, GIRO};
 	Estados estado;
-	enum class EstadosMD {IDLE, ALINEACION, GO, INICIAL};
+	enum class EstadosMD {IDLE, GO, INICIAL};
 	EstadosMD manoderecha;
 	float objective_angle;
 	float robot_angle;
 	float distancia;
+	float anterior;
 	double frente;
+	double izquierda;
+	double derecha;
 	int flag; /* control de angulo*/
 	QVec pto_inicial;
 	QVec pto_normalX;
 	QVec pto_normalY;
 	float dist_eu;
-
+	bool izq;
+	bool up;
+	double tanto;
+	bool dir;
+	QLine2D recta; 
 };
 
 #endif

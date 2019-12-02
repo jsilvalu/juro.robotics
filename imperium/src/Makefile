@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/salabeta/robocomp/components/juro.robotics/imperium/src
+CMAKE_SOURCE_DIR = /home/salabeta/robocomp/components/juro.robotics/imperium
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/salabeta/robocomp/components/juro.robotics/imperium/src
+CMAKE_BINARY_DIR = /home/salabeta/robocomp/components/juro.robotics/imperium
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,14 +126,14 @@ install/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles /home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles 0
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(CMAKE_COMMAND) -E cmake_progress_start /home/salabeta/robocomp/components/juro.robotics/imperium/CMakeFiles /home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/progress.marks
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/salabeta/robocomp/components/juro.robotics/imperium/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -143,43 +143,47 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named imperium
+# Convenience name for target.
+src/CMakeFiles/imperium.dir/rule:
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/imperium.dir/rule
+.PHONY : src/CMakeFiles/imperium.dir/rule
 
-# Build rule for target.
-imperium: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 imperium
+# Convenience name for target.
+imperium: src/CMakeFiles/imperium.dir/rule
+
 .PHONY : imperium
 
 # fast build rule for target.
 imperium/fast:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/build
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/build
 .PHONY : imperium/fast
 
-#=============================================================================
-# Target rules for targets named imperium_autogen
+# Convenience name for target.
+src/CMakeFiles/imperium_autogen.dir/rule:
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/imperium_autogen.dir/rule
+.PHONY : src/CMakeFiles/imperium_autogen.dir/rule
 
-# Build rule for target.
-imperium_autogen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 imperium_autogen
+# Convenience name for target.
+imperium_autogen: src/CMakeFiles/imperium_autogen.dir/rule
+
 .PHONY : imperium_autogen
 
 # fast build rule for target.
 imperium_autogen/fast:
-	$(MAKE) -f CMakeFiles/imperium_autogen.dir/build.make CMakeFiles/imperium_autogen.dir/build
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium_autogen.dir/build.make src/CMakeFiles/imperium_autogen.dir/build
 .PHONY : imperium_autogen/fast
 
 CommonBehavior.o: CommonBehavior.cpp.o
@@ -188,7 +192,7 @@ CommonBehavior.o: CommonBehavior.cpp.o
 
 # target to build an object file
 CommonBehavior.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/CommonBehavior.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/CommonBehavior.cpp.o
 .PHONY : CommonBehavior.cpp.o
 
 CommonBehavior.i: CommonBehavior.cpp.i
@@ -197,7 +201,7 @@ CommonBehavior.i: CommonBehavior.cpp.i
 
 # target to preprocess a source file
 CommonBehavior.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/CommonBehavior.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/CommonBehavior.cpp.i
 .PHONY : CommonBehavior.cpp.i
 
 CommonBehavior.s: CommonBehavior.cpp.s
@@ -206,7 +210,7 @@ CommonBehavior.s: CommonBehavior.cpp.s
 
 # target to generate assembly for a file
 CommonBehavior.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/CommonBehavior.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/CommonBehavior.cpp.s
 .PHONY : CommonBehavior.cpp.s
 
 DifferentialRobot.o: DifferentialRobot.cpp.o
@@ -215,7 +219,7 @@ DifferentialRobot.o: DifferentialRobot.cpp.o
 
 # target to build an object file
 DifferentialRobot.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/DifferentialRobot.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/DifferentialRobot.cpp.o
 .PHONY : DifferentialRobot.cpp.o
 
 DifferentialRobot.i: DifferentialRobot.cpp.i
@@ -224,7 +228,7 @@ DifferentialRobot.i: DifferentialRobot.cpp.i
 
 # target to preprocess a source file
 DifferentialRobot.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/DifferentialRobot.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/DifferentialRobot.cpp.i
 .PHONY : DifferentialRobot.cpp.i
 
 DifferentialRobot.s: DifferentialRobot.cpp.s
@@ -233,7 +237,7 @@ DifferentialRobot.s: DifferentialRobot.cpp.s
 
 # target to generate assembly for a file
 DifferentialRobot.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/DifferentialRobot.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/DifferentialRobot.cpp.s
 .PHONY : DifferentialRobot.cpp.s
 
 GenericBase.o: GenericBase.cpp.o
@@ -242,7 +246,7 @@ GenericBase.o: GenericBase.cpp.o
 
 # target to build an object file
 GenericBase.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/GenericBase.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/GenericBase.cpp.o
 .PHONY : GenericBase.cpp.o
 
 GenericBase.i: GenericBase.cpp.i
@@ -251,7 +255,7 @@ GenericBase.i: GenericBase.cpp.i
 
 # target to preprocess a source file
 GenericBase.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/GenericBase.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/GenericBase.cpp.i
 .PHONY : GenericBase.cpp.i
 
 GenericBase.s: GenericBase.cpp.s
@@ -260,7 +264,7 @@ GenericBase.s: GenericBase.cpp.s
 
 # target to generate assembly for a file
 GenericBase.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/GenericBase.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/GenericBase.cpp.s
 .PHONY : GenericBase.cpp.s
 
 Laser.o: Laser.cpp.o
@@ -269,7 +273,7 @@ Laser.o: Laser.cpp.o
 
 # target to build an object file
 Laser.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/Laser.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/Laser.cpp.o
 .PHONY : Laser.cpp.o
 
 Laser.i: Laser.cpp.i
@@ -278,7 +282,7 @@ Laser.i: Laser.cpp.i
 
 # target to preprocess a source file
 Laser.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/Laser.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/Laser.cpp.i
 .PHONY : Laser.cpp.i
 
 Laser.s: Laser.cpp.s
@@ -287,7 +291,7 @@ Laser.s: Laser.cpp.s
 
 # target to generate assembly for a file
 Laser.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/Laser.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/Laser.cpp.s
 .PHONY : Laser.cpp.s
 
 RCISMousePicker.o: RCISMousePicker.cpp.o
@@ -296,7 +300,7 @@ RCISMousePicker.o: RCISMousePicker.cpp.o
 
 # target to build an object file
 RCISMousePicker.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/RCISMousePicker.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/RCISMousePicker.cpp.o
 .PHONY : RCISMousePicker.cpp.o
 
 RCISMousePicker.i: RCISMousePicker.cpp.i
@@ -305,7 +309,7 @@ RCISMousePicker.i: RCISMousePicker.cpp.i
 
 # target to preprocess a source file
 RCISMousePicker.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/RCISMousePicker.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/RCISMousePicker.cpp.i
 .PHONY : RCISMousePicker.cpp.i
 
 RCISMousePicker.s: RCISMousePicker.cpp.s
@@ -314,7 +318,7 @@ RCISMousePicker.s: RCISMousePicker.cpp.s
 
 # target to generate assembly for a file
 RCISMousePicker.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/RCISMousePicker.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/RCISMousePicker.cpp.s
 .PHONY : RCISMousePicker.cpp.s
 
 commonbehaviorI.o: commonbehaviorI.cpp.o
@@ -323,7 +327,7 @@ commonbehaviorI.o: commonbehaviorI.cpp.o
 
 # target to build an object file
 commonbehaviorI.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/commonbehaviorI.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/commonbehaviorI.cpp.o
 .PHONY : commonbehaviorI.cpp.o
 
 commonbehaviorI.i: commonbehaviorI.cpp.i
@@ -332,7 +336,7 @@ commonbehaviorI.i: commonbehaviorI.cpp.i
 
 # target to preprocess a source file
 commonbehaviorI.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/commonbehaviorI.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/commonbehaviorI.cpp.i
 .PHONY : commonbehaviorI.cpp.i
 
 commonbehaviorI.s: commonbehaviorI.cpp.s
@@ -341,7 +345,7 @@ commonbehaviorI.s: commonbehaviorI.cpp.s
 
 # target to generate assembly for a file
 commonbehaviorI.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/commonbehaviorI.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/commonbehaviorI.cpp.s
 .PHONY : commonbehaviorI.cpp.s
 
 genericmonitor.o: genericmonitor.cpp.o
@@ -350,7 +354,7 @@ genericmonitor.o: genericmonitor.cpp.o
 
 # target to build an object file
 genericmonitor.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericmonitor.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericmonitor.cpp.o
 .PHONY : genericmonitor.cpp.o
 
 genericmonitor.i: genericmonitor.cpp.i
@@ -359,7 +363,7 @@ genericmonitor.i: genericmonitor.cpp.i
 
 # target to preprocess a source file
 genericmonitor.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericmonitor.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericmonitor.cpp.i
 .PHONY : genericmonitor.cpp.i
 
 genericmonitor.s: genericmonitor.cpp.s
@@ -368,7 +372,7 @@ genericmonitor.s: genericmonitor.cpp.s
 
 # target to generate assembly for a file
 genericmonitor.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericmonitor.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericmonitor.cpp.s
 .PHONY : genericmonitor.cpp.s
 
 genericworker.o: genericworker.cpp.o
@@ -377,7 +381,7 @@ genericworker.o: genericworker.cpp.o
 
 # target to build an object file
 genericworker.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericworker.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericworker.cpp.o
 .PHONY : genericworker.cpp.o
 
 genericworker.i: genericworker.cpp.i
@@ -386,7 +390,7 @@ genericworker.i: genericworker.cpp.i
 
 # target to preprocess a source file
 genericworker.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericworker.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericworker.cpp.i
 .PHONY : genericworker.cpp.i
 
 genericworker.s: genericworker.cpp.s
@@ -395,7 +399,7 @@ genericworker.s: genericworker.cpp.s
 
 # target to generate assembly for a file
 genericworker.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/genericworker.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/genericworker.cpp.s
 .PHONY : genericworker.cpp.s
 
 home/salabeta/robocomp/classes/qlog/qlog.o: home/salabeta/robocomp/classes/qlog/qlog.cpp.o
@@ -404,7 +408,7 @@ home/salabeta/robocomp/classes/qlog/qlog.o: home/salabeta/robocomp/classes/qlog/
 
 # target to build an object file
 home/salabeta/robocomp/classes/qlog/qlog.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.o
 .PHONY : home/salabeta/robocomp/classes/qlog/qlog.cpp.o
 
 home/salabeta/robocomp/classes/qlog/qlog.i: home/salabeta/robocomp/classes/qlog/qlog.cpp.i
@@ -413,7 +417,7 @@ home/salabeta/robocomp/classes/qlog/qlog.i: home/salabeta/robocomp/classes/qlog/
 
 # target to preprocess a source file
 home/salabeta/robocomp/classes/qlog/qlog.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.i
 .PHONY : home/salabeta/robocomp/classes/qlog/qlog.cpp.i
 
 home/salabeta/robocomp/classes/qlog/qlog.s: home/salabeta/robocomp/classes/qlog/qlog.cpp.s
@@ -422,7 +426,7 @@ home/salabeta/robocomp/classes/qlog/qlog.s: home/salabeta/robocomp/classes/qlog/
 
 # target to generate assembly for a file
 home/salabeta/robocomp/classes/qlog/qlog.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/qlog/qlog.cpp.s
 .PHONY : home/salabeta/robocomp/classes/qlog/qlog.cpp.s
 
 home/salabeta/robocomp/classes/rapplication/rapplication.o: home/salabeta/robocomp/classes/rapplication/rapplication.cpp.o
@@ -431,7 +435,7 @@ home/salabeta/robocomp/classes/rapplication/rapplication.o: home/salabeta/roboco
 
 # target to build an object file
 home/salabeta/robocomp/classes/rapplication/rapplication.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.o
 .PHONY : home/salabeta/robocomp/classes/rapplication/rapplication.cpp.o
 
 home/salabeta/robocomp/classes/rapplication/rapplication.i: home/salabeta/robocomp/classes/rapplication/rapplication.cpp.i
@@ -440,7 +444,7 @@ home/salabeta/robocomp/classes/rapplication/rapplication.i: home/salabeta/roboco
 
 # target to preprocess a source file
 home/salabeta/robocomp/classes/rapplication/rapplication.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.i
 .PHONY : home/salabeta/robocomp/classes/rapplication/rapplication.cpp.i
 
 home/salabeta/robocomp/classes/rapplication/rapplication.s: home/salabeta/robocomp/classes/rapplication/rapplication.cpp.s
@@ -449,7 +453,7 @@ home/salabeta/robocomp/classes/rapplication/rapplication.s: home/salabeta/roboco
 
 # target to generate assembly for a file
 home/salabeta/robocomp/classes/rapplication/rapplication.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/rapplication/rapplication.cpp.s
 .PHONY : home/salabeta/robocomp/classes/rapplication/rapplication.cpp.s
 
 home/salabeta/robocomp/classes/sigwatch/sigwatch.o: home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.o
@@ -458,7 +462,7 @@ home/salabeta/robocomp/classes/sigwatch/sigwatch.o: home/salabeta/robocomp/class
 
 # target to build an object file
 home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.o
 .PHONY : home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.o
 
 home/salabeta/robocomp/classes/sigwatch/sigwatch.i: home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.i
@@ -467,7 +471,7 @@ home/salabeta/robocomp/classes/sigwatch/sigwatch.i: home/salabeta/robocomp/class
 
 # target to preprocess a source file
 home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.i
 .PHONY : home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.i
 
 home/salabeta/robocomp/classes/sigwatch/sigwatch.s: home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.s
@@ -476,7 +480,7 @@ home/salabeta/robocomp/classes/sigwatch/sigwatch.s: home/salabeta/robocomp/class
 
 # target to generate assembly for a file
 home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.s
 .PHONY : home/salabeta/robocomp/classes/sigwatch/sigwatch.cpp.s
 
 imperium_autogen/mocs_compilation.o: imperium_autogen/mocs_compilation.cpp.o
@@ -485,7 +489,7 @@ imperium_autogen/mocs_compilation.o: imperium_autogen/mocs_compilation.cpp.o
 
 # target to build an object file
 imperium_autogen/mocs_compilation.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.o
 .PHONY : imperium_autogen/mocs_compilation.cpp.o
 
 imperium_autogen/mocs_compilation.i: imperium_autogen/mocs_compilation.cpp.i
@@ -494,7 +498,7 @@ imperium_autogen/mocs_compilation.i: imperium_autogen/mocs_compilation.cpp.i
 
 # target to preprocess a source file
 imperium_autogen/mocs_compilation.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.i
 .PHONY : imperium_autogen/mocs_compilation.cpp.i
 
 imperium_autogen/mocs_compilation.s: imperium_autogen/mocs_compilation.cpp.s
@@ -503,7 +507,7 @@ imperium_autogen/mocs_compilation.s: imperium_autogen/mocs_compilation.cpp.s
 
 # target to generate assembly for a file
 imperium_autogen/mocs_compilation.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/imperium_autogen/mocs_compilation.cpp.s
 .PHONY : imperium_autogen/mocs_compilation.cpp.s
 
 main.o: main.cpp.o
@@ -512,7 +516,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/main.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -521,7 +525,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/main.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -530,7 +534,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/main.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 rcismousepickerI.o: rcismousepickerI.cpp.o
@@ -539,7 +543,7 @@ rcismousepickerI.o: rcismousepickerI.cpp.o
 
 # target to build an object file
 rcismousepickerI.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/rcismousepickerI.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/rcismousepickerI.cpp.o
 .PHONY : rcismousepickerI.cpp.o
 
 rcismousepickerI.i: rcismousepickerI.cpp.i
@@ -548,7 +552,7 @@ rcismousepickerI.i: rcismousepickerI.cpp.i
 
 # target to preprocess a source file
 rcismousepickerI.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/rcismousepickerI.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/rcismousepickerI.cpp.i
 .PHONY : rcismousepickerI.cpp.i
 
 rcismousepickerI.s: rcismousepickerI.cpp.s
@@ -557,7 +561,7 @@ rcismousepickerI.s: rcismousepickerI.cpp.s
 
 # target to generate assembly for a file
 rcismousepickerI.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/rcismousepickerI.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/rcismousepickerI.cpp.s
 .PHONY : rcismousepickerI.cpp.s
 
 specificmonitor.o: specificmonitor.cpp.o
@@ -566,7 +570,7 @@ specificmonitor.o: specificmonitor.cpp.o
 
 # target to build an object file
 specificmonitor.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificmonitor.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificmonitor.cpp.o
 .PHONY : specificmonitor.cpp.o
 
 specificmonitor.i: specificmonitor.cpp.i
@@ -575,7 +579,7 @@ specificmonitor.i: specificmonitor.cpp.i
 
 # target to preprocess a source file
 specificmonitor.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificmonitor.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificmonitor.cpp.i
 .PHONY : specificmonitor.cpp.i
 
 specificmonitor.s: specificmonitor.cpp.s
@@ -584,7 +588,7 @@ specificmonitor.s: specificmonitor.cpp.s
 
 # target to generate assembly for a file
 specificmonitor.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificmonitor.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificmonitor.cpp.s
 .PHONY : specificmonitor.cpp.s
 
 specificworker.o: specificworker.cpp.o
@@ -593,7 +597,7 @@ specificworker.o: specificworker.cpp.o
 
 # target to build an object file
 specificworker.cpp.o:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificworker.cpp.o
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificworker.cpp.o
 .PHONY : specificworker.cpp.o
 
 specificworker.i: specificworker.cpp.i
@@ -602,7 +606,7 @@ specificworker.i: specificworker.cpp.i
 
 # target to preprocess a source file
 specificworker.cpp.i:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificworker.cpp.i
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificworker.cpp.i
 .PHONY : specificworker.cpp.i
 
 specificworker.s: specificworker.cpp.s
@@ -611,7 +615,7 @@ specificworker.s: specificworker.cpp.s
 
 # target to generate assembly for a file
 specificworker.cpp.s:
-	$(MAKE) -f CMakeFiles/imperium.dir/build.make CMakeFiles/imperium.dir/specificworker.cpp.s
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(MAKE) -f src/CMakeFiles/imperium.dir/build.make src/CMakeFiles/imperium.dir/specificworker.cpp.s
 .PHONY : specificworker.cpp.s
 
 # Help Target
@@ -687,6 +691,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/salabeta/robocomp/components/juro.robotics/imperium && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

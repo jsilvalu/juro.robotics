@@ -1,0 +1,8 @@
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/install/strip.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/edit_cache.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/imperium.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/rebuild_cache.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/list_install_components.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/install/local.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/install.dir
+/home/salabeta/robocomp/components/juro.robotics/imperium/src/CMakeFiles/imperium_autogen.dir
